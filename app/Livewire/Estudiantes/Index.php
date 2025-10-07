@@ -12,19 +12,57 @@ use Maatwebsite\Excel\Facades\Excel;
 use Livewire\WithFileUploads; // Added
 use App\Imports\EstudiantesImport; // Added
 
+use Livewire\Attributes\On; // Added
+use Livewire\Attributes\Url; // Added
+
 class Index extends Component
 {
-    use WithPagination, WithFileUploads; // Added
+    use WithPagination, WithFileUploads;
 
     // Changed 'carrera' to 'carrera_id' and added 'all_carreras'
     public $nombres, $apellidos, $identificacion, $carrera_id, $student_id;
     public $all_carreras = [];
-    public $archivo_importacion; // Added
+    public $archivo_importacion;
+
+    // Added search, sort, and perPage properties
+    #[Url]
+    public $search = '';
+    #[Url]
+    public $perPage = 10;
+    #[Url]
+    public $sortField = 'id';
+    #[Url]
+    public $sortDirection = 'desc';
+
+    #[On('estudianteCreated')] // Assuming an event for refresh
+    public function refresh()
+    {
+        //
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+
+        $this->sortField = $field;
+    }
 
     public function render()
     {
-        // Eager-load the carrera relationship
-        $estudiantes = Estudiante::with('carrera')->paginate(10);
+        // Eager-load the carrera relationship and apply search/sort/pagination
+        $estudiantes = Estudiante::with('carrera')
+            ->search($this->search) // Use the new scopeSearch
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
 
         return view('livewire.estudiantes.index', [
             'estudiantes' => $estudiantes,
