@@ -29,4 +29,12 @@ class Qr extends Model
     {
         return $this->belongsTo(Estudiante::class);
     }
+
+    /**
+     * Get the audit entries for the QR code.
+     */
+    public function auditoriaEntradas()
+    {
+        return $this->hasMany(AuditoriaEntrada::class);
+    }
 }

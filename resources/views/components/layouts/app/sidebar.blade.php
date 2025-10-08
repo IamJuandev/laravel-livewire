@@ -17,20 +17,27 @@
             <flux:navlist.group :heading="__('Platform')" class="grid">
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                <flux:navlist.item icon="inbox-arrow-down" :href="route('products.index')"
+                {{-- <flux:navlist.item icon="inbox-arrow-down" :href="route('products.index')"
                     :current="request()->routeIs('products.*')" wire:navigate>{{ __('Productos') }}</flux:navlist.item>
+                --}}
                 <flux:navlist.item icon="user-group" :href="route('estudiantes.index')"
                     :current="request()->routeIs('estudiantes.*')" wire:navigate>{{ __('Estudiantes') }}
                 </flux:navlist.item>
                 <flux:navlist.item icon="qr-code" :href="route('qrs.index')" :current="request()->routeIs('qrs.*')"
                     wire:navigate>{{ __('QRS') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="ticket" :href="route('invitaciones.index')"
+                    :current="request()->routeIs('invitaciones.*')" wire:navigate>{{ __('Invitaciones') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="clipboard-document-check" :href="route('registrar-entrada.index')"
+                    :current="request()->routeIs('registrar-entrada.*')" wire:navigate>{{ __('Registrar Entrada') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
         <flux:spacer />
 
-        <flux:navlist variant="outline">
+        {{-- <flux:navlist variant="outline">
             <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
                 target="_blank">
                 {{ __('Repository') }}
@@ -40,7 +47,7 @@
                 target="_blank">
                 {{ __('Documentation') }}
             </flux:navlist.item>
-        </flux:navlist>
+        </flux:navlist> --}}
 
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">
@@ -137,6 +144,7 @@
     {{ $slot }}
 
     @fluxScripts
+    @stack('scripts')
 </body>
 
 </html>
